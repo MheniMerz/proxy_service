@@ -10,7 +10,7 @@ class Network:
         self.client = SSHClient()
         self.loadSSH()
         self.emulation_mode = emulation_mode
-        self.soic_service = Sonic_service(self.client)
+        self.sonic_service = Sonic_service(self.client)
         self.ocnos_service = OcnosService(self.client)
         self.sonic_data = {}
         self.ocnos_data = {}
@@ -101,7 +101,7 @@ class Network:
                 traceback.print_exc()
                 continue
             if self.topology[device]['os'].replace('"','') == 'sonic':
-                self.sonic_data.update(self.soic_service.collectData(device = device))
+                self.sonic_data.update(self.sonic_service.collectData(device = device))
             elif self.topology[device]['os'].replace('"','') == 'ocnos':
                 self.ocnos_data.update(self.ocnos_service.collectData(device = device))
 
@@ -164,7 +164,7 @@ class Network:
                 else: # regular configuration mode
                     if self.topology[device] == 'sonic':
                         
-                        if(self.soic_service.config_device(device = device, config = network_config[device]) != 0):
+                        if(self.sonic_service.config_device(device = device, config = network_config[device]) != 0):
                             logging.warning("Configuring device {} Failed, starting backup mode for all devices...")
                             self.client.close()
                             self.config_network(network_config,cfg,backup=True)
