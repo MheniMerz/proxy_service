@@ -1,0 +1,17 @@
+Value NAME (\S+)
+Value INDEX (\d+)
+Value MTU (\d+)
+Value SPEED (\d+)
+Value MACADDR ([0-9a-f]{4}\.[0-9a-f]{4}\.[0-9a-f]{4})
+Value IPADDR (\S+)
+Value IPADDR6 (\S+)
+Value TYPE (\S+)
+
+Start
+  ^Interface ${NAME} 
+  ^\s+Physical:${MACADDR}
+  ^\s+Port Mode is ${TYPE}
+  ^\s+Interface index: ${INDEX}
+  ^\s+Metric 1 mtu ${MTU}\s+(\S+\s+link-speed\s+${SPEED})?
+  ^\s+inet\s+${IPADDR}
+  ^\s+inet6\s+${IPADDR6} -> Record
